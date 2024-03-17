@@ -1,17 +1,18 @@
 // @ts-nocheck
 // src/lib/wallet.js
 import {ethers} from 'ethers';
+import {BrowserProvider} from "ethers";
 
 async function connect_wallet() {
     if (typeof window.ethereum !== 'undefined') {
         try {
             await window.ethereum.request({ method: 'eth_requestAccounts' });
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
+            const provider = new BrowserProvider(window.ethereum);
             const signer = provider.getSigner();
             console.log("Wallet connected");
             return signer;
         } catch (error) {
-            console.error("User denied account access");
+            console.error("User denied account access", error);
         }
     } else {
         console.log('Please install MetaMask!');
@@ -25,7 +26,7 @@ const contract_abi = [
     "function checkState(uint256 contract_id) external view returns (uint8)",
     "function arbitrate(uint256 contract_id, uint8 decision) external"
 ];
-const contract_address = "YOUR_CONTRACT_ADDRESS";
+const contract_address = "0xBd27cA124C7C4C300796f877706C331309f3C12E";
 
 let client_contract;
 let filler_contract;
@@ -48,9 +49,9 @@ async function create_new_contract(contract_id, filler_address, filler_deposit, 
         // Call the `new_contract` function
         const tx = await client_contract.newContract(contract_id, filler_address, filler_deposit, checkpoints, options);
         await tx.wait(); // Wait for the transaction to be mined
-        console.log("Contract creation transaction successful", tx);
+        console.log("Contract creation transaction successful");
     } catch (error) {
-        console.error("Failed to create new contract", error);
+        console.error("Failed to create new contract", error.message);
     }
 }
 

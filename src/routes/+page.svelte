@@ -22,6 +22,7 @@
 
     async function handle_create_contract() {
         await create_new_contract(contract_id, filler_id, 42, checkpoints);
+        polled_status = await check_state();
     }
 
     async function handle_activate_contract() {
@@ -55,15 +56,15 @@
        polled_status = await check_state(contract_id);
 	}
 
-    const position_interval = setInterval(handle_upload_position, 1000);
-    const state_interval = setInterval(handle_check_state, 5000);
-
-    $effect(() => {
-       if (polled_status > 3) {
-           clearInterval(position_interval);
-           clearInterval(state_interval);
-       }
-	});
+    // const position_interval = setInterval(handle_upload_position, 1000);
+    // const state_interval = setInterval(handle_check_state, 5000);
+	//
+    // $effect(() => {
+    //    if (polled_status > 3) {
+    //        clearInterval(position_interval);
+    //        clearInterval(state_interval);
+    //    }
+	// });
 </script>
 
 <svelte:head>
