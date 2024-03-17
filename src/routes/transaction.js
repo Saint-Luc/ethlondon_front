@@ -44,7 +44,7 @@ async function create_new_contract(contract_id, filler_address, filler_deposit, 
 
     try {
         const options = {
-            value: ethers.utils.parseEther(filler_deposit.toString()) // Example: sending 1 Ether
+            value: ethers.parseEther(filler_deposit.toString()) // Example: sending 1 Ether
         };
         // Call the `new_contract` function
         const tx = await client_contract.newContract(contract_id, filler_address, filler_deposit, checkpoints, options);
